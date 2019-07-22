@@ -141,6 +141,7 @@ int Initialized_Check(LNode* head)
 	}
 }
 
+
 void Print_Linklist(LNode* head)
 {
 	LNode* ptr = head;//通过定义一个指针来保留原head。另一种实现方法是设置一个整型变量，每循环一次自加一次，最终结果即为元素个数 //也可直接对head操作，设置变量每循环一次自加，便可统计个数。
@@ -155,6 +156,22 @@ void Print_Linklist(LNode* head)
 		printf("\n一共有： %d  个元素！\n\n", head->data);
 	}
 }
+
+/*
+void Print_Linklist(LNode* head)
+{
+	head = head->next;
+	if (head != NULL)
+	{
+		printf("%d  ", head->data);
+		Print_Linklist(head);
+	}
+	else
+	{
+		return;
+	}
+}
+*/
 
 LNode* Create_Linklist(LNode* head)  //依然需要注意函数内部的局部参数问题，所以通过返回值来传递数据
 {
