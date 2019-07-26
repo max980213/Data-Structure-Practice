@@ -64,7 +64,42 @@ void pop(SLNode* top)
 	else
 	{
 		SLNode* p = top->next;
-		printf("%d", p->data);
+		switch (p->data)
+		{
+		case 10:
+		{
+			printf("A");
+			break;
+		}
+		case 11:
+		{
+			printf("B");
+			break;
+		}
+		case 12:
+		{
+			printf("C");
+			break;
+		}
+		case 13:
+		{
+			printf("D");
+			break;
+		}
+		case 14:
+		{
+			printf("E");
+			break;
+		}
+		case 15:
+		{
+			printf("F");
+			break;
+		}
+		default:
+			printf("%d", p->data);
+		}
+		//printf("%d", p->data);
 		top->next = p->next;
 		free(p);
 		top->data--;
