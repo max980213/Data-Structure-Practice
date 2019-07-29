@@ -17,9 +17,10 @@ typedef struct SeQueue
 
 SeQueue Initialize();
 void Print(SeQueue S);
-void Insert(SeQueue S);
-void Delete(SeQueue S);
+void Insert(SeQueue* S);
+void Delete(SeQueue* S);
 int FilledCheck(SeQueue S);
+int EmptyCheck(SeQueue S);
 
 
 
@@ -50,17 +51,17 @@ int main()
 		}
 		case 1:
 		{
-			S = Initialize(S);
+			S = Initialize();
 			break;
 		}
 		case 2:
 		{
-			Insert(S);
+			Insert(&S);
 			break;
 		}
 		case 3:
 		{
-			Delete(S);
+			Delete(&S);
 			break;
 		}
 		case -1:
@@ -92,7 +93,7 @@ void Print(SeQueue S) //从头指针输出到尾指针，其中尾指针指向�
 		S.front = (S.front + 1) % MAX_SIZE;
 	}
 }
-
+/* 这是一段不能实现功能的代码，因为结构体传入后再子函数内为临时变量，子函数结束后就释放了
 void Insert(SeQueue S)
 {
 	if (FilledCheck(S))
@@ -107,25 +108,52 @@ void Insert(SeQueue S)
 			i=0;
 		else
 			i++;
-		*/
+		
 		printf("  %d \n", S.Queue_array[S.rear]);
 		printf("插入成功！\n\n");
 	}
 }
-
-void Delete(SeQueue S)//删除无需判断是否队满，这里front是指向有元素的单位，应该判断队空
+*/
+void Insert(SeQueue* S)
 {
-	S.Queue_array[S.front] = NULL;
-	S.front = (S.front + 1) % MAX_SIZE;
-	printf("删除成功！\n\n");
+	if (FilledCheck(*S))
+	{
+		int e;
+		printf("请输入想要插入的数据！\n");
+		scanf_s("%d", &e);
+		S->Queue_array[S->rear] = e;
+		S->rear = (S->rear + 1) % MAX_SIZE;
+		printf("插入成功！\n\n");
+	}
+}
+
+void Delete(SeQueue* S)//删除无需判断是否队满，这里front是指向有元素的单位，应该判断队空
+{
+	if (EmptyCheck(*S))
+	{
+		S->front = (S->front + 1) % MAX_SIZE;
+		printf("删除成功！\n\n");
+	}
 }
 
 int FilledCheck(SeQueue S)
 {
-	return 1;
+	if ((S.rear + 1) % MAX_SIZE == S.front)
+	{
+		printf("队列已满！不可插入！\n\n");
+		return 0;
+	}
+	else
+		return 1;
 }
 
-int Emptycheck(SeQueue S)
+int EmptyCheck(SeQueue S)
 {
-	return 1;
+	if (S.front == S.rear)
+	{
+		printf("队列已为空！\n\n");
+		return 0;
+	}
+	else
+		return 1;
 }
