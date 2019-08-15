@@ -22,6 +22,7 @@ void Preorder_Print3(BTNode* root);//先序遍历二叉树的第三种非递归�
 void Inorder_Print_Recursion(BTNode* root);//中序遍历（递归）
 void Inorder_Print(BTNode* root);//中序遍历二叉树（非递归）
 void Postorder_Print_Recursion(BTNode* root);//后序遍历（递归）
+void Postorder_Print(BTNode* root);//后序遍历（非递归）
 
 int main()
 {
