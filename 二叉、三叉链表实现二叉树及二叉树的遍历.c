@@ -23,6 +23,7 @@ void Inorder_Print_Recursion(BTNode* root);//中序遍历（递归）
 void Inorder_Print(BTNode* root);//中序遍历二叉树（非递归）
 void Postorder_Print_Recursion(BTNode* root);//后序遍历（递归）
 void Postorder_Print(BTNode* root);//后序遍历（非递归）
+void Depth_Count(BTNode* root);//求深度
 
 int main()
 {
@@ -38,6 +39,10 @@ int main()
 		printf("先序遍历二叉树（非递归1）\n");
 		printf("先序遍历二叉树（非递归2）\n");
 		printf("先序遍历二叉树（非递归3）\n");
+		printf("中序遍历二叉树（递归）\n");
+		printf("中序遍历二叉树（非递归）\n");
+		printf("后序遍历二叉树（递归）\n");
+		printf("后序遍历二叉树（非递归）\n");
 		printf("-1.退出\n");
 		if (in = scanf_s("%d", &input) != 1)
 		{
@@ -63,6 +68,8 @@ int main()
 			printf("后序遍历（递归）：   ");
 			Postorder_Print_Recursion(root);
 			putchar('\n');
+			Postorder_Print(root);
+			Depth_Count(root);
 			break;
 		}
 		case 2:
@@ -82,6 +89,8 @@ int main()
 			printf("后续遍历（递归）：   ");
 			Postorder_Print_Recursion(root);
 			putchar('\n');
+			Postorder_Print(root);
+			Depth_Count(root);
 			break;
 		}
 
@@ -176,15 +185,15 @@ void Depth_Print(BTNode* root)
 	printf("层次遍历：           ");
 	if (p != NULL)
 	{
-		Queue[++rear] = p;//根入队
+		Queue[rear++] = p;//根入队
 		while (front < rear)
 		{
-			p = Queue[++front];
+			p = Queue[front++];
 			printf("  %c  ", p->data);//访问数据域
 			if (p->Lchild != NULL)
-				Queue[++rear] = p->Lchild;
+				Queue[rear++] = p->Lchild;
 			if (p->Rchild != NULL)
-				Queue[++rear] = p->Rchild;
+				Queue[rear++] = p->Rchild;
 		}
 	}
 	printf("\n");
@@ -316,4 +325,64 @@ void Postorder_Print_Recursion(BTNode* root)
 		Postorder_Print_Recursion(root->Rchild);
 		printf("  %c  ", root->data);
 	}
+}
+
+void Postorder_Print(BTNode* root)
+{
+	BTNode* Stack1[MAX_NODE] = { NULL }, * p = root;
+	int Stack2[MAX_NODE], top = 0;
+	if (p == NULL)
+		printf("树为空！\n\n");
+	else
+	{
+		printf("后序遍历（非递归1）：");
+		do
+		{
+			while (p != NULL)
+			{
+				Stack1[top] = p;
+				Stack2[top++] = 0;//记录是否可以访问节点，因为第三次经过节点时才访问，即从右子树返回时
+				p = p->Lchild;//找到左子树的最深节点
+			}
+			if (Stack2[top-1] == 0)
+			{
+				p = Stack1[--top]->Rchild;//遍历右子树
+				Stack2[top++] = 1;//表示该节点下次访问是从右子树返回时，此时可以访问了
+				//这里top需要++ 因为不++会指向该节点的前一个节点，且此时该节点还没有被访问，如果不++该节点就被抹掉了
+			}
+			else
+			{
+				p = Stack1[--top];
+				printf("  %c  ", p->data);
+				p = NULL;
+			}
+		} while (top > 0 || p != NULL);
+	}
+	putchar('\n');
+}
+
+void Depth_Count(BTNode* root)//基于层次遍历算法
+{
+	BTNode* Queue[MAX_NODE] = { NULL }, * p = root;
+	int front = 0, rear = 0, depth = 0, level = 0;//level总是指向访问层的最后一个节点
+	if (p != NULL)
+	{
+		printf("树的层数：           ");
+		Queue[rear++] = p;//根入队
+		level = rear;//根就是第一层的最后一个节点
+		while (front < rear)
+		{
+			p = Queue[front++];
+			if (p->Lchild != NULL)
+				Queue[rear++] = p->Lchild;
+			if (p->Rchild != NULL)
+				Queue[rear++] = p->Rchild;
+			if (front == level)//正访问当前层的最后一个节点
+			{
+				depth++; level = rear;
+			}
+		}
+	}
+	printf("  %d  \n", depth);
+	
 }
